@@ -88,15 +88,15 @@ func pollOnce(errorCount *int) error {
 
 	// 1. Load Average
 	if loadAvg > loadAvgLimit {
-		fmt.Printf("Load Average is too high: %.2f\n", loadAvg)
+		fmt.Printf("Load Average is too high: %.0f\n", loadAvg)
 	}
 
 	// 2. Memory usage
-	memUsagePercent := (memUsed / memTotal) * 100.0
-	if memUsagePercent > memUsageLimit {
-		fmt.Printf("Memory usage too high: %.0f%%\n", memUsagePercent)
+	memUsage := int(memUsed * 100 / memTotal)
+	if memUsage > 80 {
+		fmt.Printf("Memory usage too high: %d%%\n", memUsage)
 	}
-
+	
 	// 3. Disk usage / free Mb
 	diskUsagePercent := (diskUsed / diskTotal) * 100.0
 	if diskUsagePercent > diskUsageLimit {
@@ -109,14 +109,11 @@ func pollOnce(errorCount *int) error {
 	}
 
 	// 4. Network usage / free Mbit/s
-	netUsagePercent := (netUsed / netBandwidth) * 100.0
-	if netUsagePercent > netUsageLimit {
-		freeBytesPerSec := netBandwidth - netUsed
-		if freeBytesPerSec < 0 {
-			freeBytesPerSec = 0
-		}
-		freeMbitPerSec := (freeBytesPerSec * bitsInByte) / megaBitDivider
-		fmt.Printf("Network bandwidth usage high: %.0f Mbit/s available\n", freeMbitPerSec)
+	netUsagePercent := int(netUsed * 100 / netBandwidth)
+	if netUsagePercent > 90 {
+		free := netBandwidth - netUsed
+		availableMbit := int(free / (1024 * 1024)) // строго так!
+		fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", availableMbit)
 	}
 
 	return nil
