@@ -98,13 +98,14 @@ func pollOnce(errorCount *int) error {
 	}
 	
 	// 3. Disk usage / free Mb
-	diskUsagePercent := (diskUsed / diskTotal) * 100.0
-	if diskUsagePercent > diskUsageLimit {
+	diskUsagePercent := int(diskUsed * 100 / diskTotal)
+
+	if diskUsagePercent > 90 {
 		freeBytes := diskTotal - diskUsed
 		if freeBytes < 0 {
 			freeBytes = 0
 		}
-		freeMb := int64(freeBytes) / mb
+		freeMb := freeBytes / 1_000_000
 		fmt.Printf("Free disk space is too low: %d Mb left\n", freeMb)
 	}
 
