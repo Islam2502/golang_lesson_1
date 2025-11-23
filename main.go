@@ -102,7 +102,7 @@ func pollOnce() error {
 		if freeBytes < 0 {
 			freeBytes = 0
 		}
-		freeMb := freeBytes / 1_000_000
+		freeMb := freeBytes / (1024 * 1024)
 		fmt.Printf("Free disk space is too low: %d Mb left\n", freeMb)
 	}
 
