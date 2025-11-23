@@ -85,7 +85,7 @@ func pollOnce() error {
 	}
 
 	// 1. LOAD AVERAGE
-	if loadAvg > loadAvgLimit {
+	if loadAvg >= loadAvgLimit {
 		fmt.Printf("Load Average is too high: %.0f\n", loadAvg)
 	}
 
