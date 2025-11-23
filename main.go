@@ -112,7 +112,7 @@ func pollOnce(errorCount *int) error {
 	netUsagePercent := int(netUsed * 100 / netBandwidth)
 	if netUsagePercent > 90 {
 		free := netBandwidth - netUsed
-		availableMbit := int(free / (1024 * 1024)) // строго так!
+		availableMbit := int(free / 1_000_000)
 		fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", availableMbit)
 	}
 
